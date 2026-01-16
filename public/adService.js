@@ -13,6 +13,22 @@
 	let showing = false;
 	let showTimer = null;
 	let allowClose = false;
+	let actionsEl = null;
+	let skipAllCashBtn = null;
+	let skipAllPointsBtn = null;
+
+	function getSkipAll() {
+		try {
+			return localStorage.getItem('skipAllAds') === 'true';
+		} catch {
+			return false;
+		}
+	}
+	function setSkipAll(val) {
+		try {
+			localStorage.setItem('skipAllAds', val ? 'true' : 'false');
+		} catch {}
+	}
 
 	function initOnce() {
 		if (initialized) return;
@@ -67,6 +83,29 @@
 		metaEl.className = 'ad-meta';
 		metaEl.textContent = 'Sponsored';
 
+		actionsEl = document.createElement('div');
+		actionsEl.className = 'ad-actions';
+		// Cash button
+		skipAllCashBtn = document.createElement('button');
+		skipAllCashBtn.type = 'button';
+		skipAllCashBtn.className = 'ad-action-btn ad-action-cash';
+		skipAllCashBtn.textContent = 'Skip all ads — $20';
+		skipAllCashBtn.addEventListener('click', () => {
+			setSkipAll(true);
+			hideOverlay();
+		});
+		// Points button
+		skipAllPointsBtn = document.createElement('button');
+		skipAllPointsBtn.type = 'button';
+		skipAllPointsBtn.className = 'ad-action-btn ad-action-points';
+		skipAllPointsBtn.textContent = 'Skip all ads — 2000 Breeze Points';
+		skipAllPointsBtn.addEventListener('click', () => {
+			setSkipAll(true);
+			hideOverlay();
+		});
+		actionsEl.appendChild(skipAllCashBtn);
+		actionsEl.appendChild(skipAllPointsBtn);
+
 		skipBtnEl = document.createElement('button');
 		skipBtnEl.className = 'ad-skip';
 		skipBtnEl.type = 'button';
@@ -79,6 +118,7 @@
 
 		cardEl.appendChild(mediaEl);
 		cardEl.appendChild(metaEl);
+		cardEl.appendChild(actionsEl);
 		cardEl.appendChild(skipBtnEl);
 		overlayEl.appendChild(cardEl);
 		document.body.appendChild(overlayEl);
@@ -88,6 +128,7 @@
 		return creatives[idx];
 	}
 	function showOverlay(creative) {
+		if (getSkipAll()) return;
 		ensureOverlay();
 		allowClose = false;
 		skipBtnEl.disabled = true;
@@ -119,6 +160,7 @@
 	window.AdService = {
 		init: initOnce,
 		onReveal() {
+			if (getSkipAll()) return;
 			showOverlay(pickCreative());
 		},
 		onQuestion() {
