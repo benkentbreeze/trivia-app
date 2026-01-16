@@ -282,6 +282,9 @@
 			setPhaseLabel('Reveal');
 			showReveal(payload.reveal);
 			stopTick();
+			if (window.AdService && typeof window.AdService.onReveal === 'function') {
+				window.AdService.onReveal();
+			}
 		} else {
 			setPhaseLabel('Waiting for next question...');
 			stopTick();
@@ -297,6 +300,9 @@
 
 	socket.on('question', (q) => {
 		setPhaseLabel('Question');
+		if (window.AdService && typeof window.AdService.onQuestion === 'function') {
+			window.AdService.onQuestion();
+		}
 		// Unlock answering when a new question arrives
 		if (lockedUntilQuestionId && q && q.id !== lockedUntilQuestionId) {
 			answerLocked = false;
@@ -310,6 +316,9 @@
 		setPhaseLabel('Reveal');
 		showReveal(q);
 		stopTick();
+		if (window.AdService && typeof window.AdService.onReveal === 'function') {
+			window.AdService.onReveal();
+		}
 	});
 
 	socket.on('answer_result', (res) => {
