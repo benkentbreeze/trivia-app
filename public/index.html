@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Breezy Trivia</title>
+	<link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="https://www.flybreeze.com/assets/icon/favicon.png" type="image/png" sizes="48x48">
+</head>
+<body>
+	<div class="container">
+		<div id="screenJoin" class="screen">
+			<div class="join-hero">
+				<h1 class="brand">Breezy Trivia</h1>
+				<p class="sub">Enter your name to join</p>
+				<div class="join">
+					<input id="joinNameInput" type="text" placeholder="Your name" maxlength="20" />
+					<button id="joinBtn">Join</button>
+				</div>
+				<div id="joinError" class="join-error hidden"></div>
+			</div>
+		</div>
+		<div id="screenGame" class="screen hidden">
+			<header class="header">
+				<h1>Breezy Trivia</h1>
+			</header>
+			<main class="main">
+				<section class="game">
+					<div class="status-bar">
+						<div id="phaseLabel" class="phase">Waiting...</div>
+						<div id="categoryLabel" class="category hidden"></div>
+						<div id="timer" class="timer"></div>
+					</div>
+					<div id="questionBox" class="question hidden">
+						<div id="questionText" class="question-text"></div>
+						<div id="choices" class="choices"></div>
+					</div>
+					<div id="revealBox" class="reveal hidden">
+						<div id="revealText"></div>
+					</div>
+					<div id="resultMsg" class="result"></div>
+				</section>
+				<aside class="sidebar">
+					<h2>Leaderboard</h2>
+					<ol id="leaderboard"></ol>
+				</aside>
+			</main>
+			<!-- <footer class="footer">
+				<p>First correct gets 100 points, second 50, then halving.</p>
+			</footer> -->
+		</div>
+	</div>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/client.js"></script>
+</body>
+</html>
